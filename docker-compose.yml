@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+    api_projeto_pi_precificacao:
+        container_name: api_projeto_pi_precificacao
+        build:
+            context:
+            dockerfile: Dockerfile
+        image: api_projeto_pi_precificacao
+        ports:
+            - "8075:8080"
