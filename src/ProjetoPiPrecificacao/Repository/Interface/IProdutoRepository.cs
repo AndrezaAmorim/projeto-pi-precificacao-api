@@ -2,7 +2,7 @@
 
 namespace ProjetoPiPrecificacao.Repository.Interface
 {
-    public interface IProdutoRespository
+    public interface IProdutoRepository
     {
         bool Cadastrar(ProdutoModel model);
         ProdutoModel BuscarProdutoPorSku(string SKU);

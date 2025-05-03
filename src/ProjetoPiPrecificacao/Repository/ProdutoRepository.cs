@@ -1,10 +1,19 @@
-﻿using ProjetoPiPrecificacao.Models;
+﻿using ProjetoPiPrecificacao.Infra.Interface;
+using ProjetoPiPrecificacao.Models;
 using ProjetoPiPrecificacao.Repository.Interface;
+using ProjetoPiPrecificacao.Repository.Queries;
 
 namespace ProjetoPiPrecificacao.Repository
 {
-    public class ProdutoRespository : IProdutoRespository
+    public class ProdutoRepository : IProdutoRepository
     {
+        private readonly ProdutoRepositoryQueries queries;
+
+        public ProdutoRepository(IDbConnectionFactory dbConnectionFactory)
+        {
+            queries = new ProdutoRepositoryQueries();
+        }
+
         public bool Cadastrar(ProdutoModel model)
         {
             // Implementar a lógica de cadastro do produto aqui

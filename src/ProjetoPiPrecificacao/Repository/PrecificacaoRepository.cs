@@ -1,10 +1,19 @@
-﻿using ProjetoPiPrecificacao.Models;
+﻿using ProjetoPiPrecificacao.Infra.Interface;
+using ProjetoPiPrecificacao.Models;
 using ProjetoPiPrecificacao.Repository.Interface;
+using ProjetoPiPrecificacao.Repository.Queries;
 
 namespace ProjetoPiPrecificacao.Repository
 {
     public class PrecificacaoRepository : IPrecificacaoRepository
     {
+        private readonly PrecificacaoRepositoryQueries queries;
+
+        public PrecificacaoRepository(IDbConnectionFactory dbConnectionFactory)
+        {
+            queries = new PrecificacaoRepositoryQueries();
+        }
+
         public bool Salvar(PrecificacaoModel model)
         {
             // Implementar a lógica de salvar a precificação aqui

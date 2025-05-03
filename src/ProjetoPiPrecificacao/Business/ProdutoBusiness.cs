@@ -6,20 +6,20 @@ namespace ProjetoPiPrecificacao.Business
 {
     public class ProdutoBusiness : IProdutoBusiness
     {
-        private readonly IProdutoRespository _produtoRespository;
-        public ProdutoBusiness(IProdutoRespository produtoRespository)
+        private readonly IProdutoRepository _produtoRepository;
+        public ProdutoBusiness(IProdutoRepository produtoRepository)
         {
-            _produtoRespository = produtoRespository;
+            _produtoRepository = produtoRepository;
         }
 
         public bool Cadastrar(ProdutoModel model)
         {
-            return _produtoRespository.Cadastrar(model);
+            return _produtoRepository.Cadastrar(model);
         }
 
         public ProdutoModel BuscarProdutoPorSku(string SKU)
         {
-            return _produtoRespository.BuscarProdutoPorSku(SKU);
+            return _produtoRepository.BuscarProdutoPorSku(SKU);
         }
     }
 }
