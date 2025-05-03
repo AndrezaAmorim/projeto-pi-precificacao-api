@@ -1,16 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjetoPiPrecificacao.Models;
 
 namespace ProjetoPiPrecificacao.Controllers
 {
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    [Route("[controller]")]
 
     public class PrecificacaoController : ControllerBase
     {
-        [HttpPost(Name = "Salvar")]
-        public IActionResult Salvar()
+        [HttpPost]
+        public IActionResult Salvar([FromBody] PrecificacaoModel model)
         {
-            return Ok("Teste realizado com sucesso!");
+            if (model == null)
+                return StatusCode(500);
+
+            return Ok(new
+            {
+                sucesso = true,
+                mensagem = "Teste realizado com sucesso!"
+            });
+        }
+
+        [HttpPost]
+        public IActionResult CalcularPreco([FromBody] PrecificacaoModel model)
+        {
+            return Ok(model);
         }
     }
 }
