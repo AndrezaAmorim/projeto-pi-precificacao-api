@@ -1,5 +1,6 @@
-var builder = WebApplication.CreateBuilder(args);
+using ProjetoPiPrecificacao;
 
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -11,7 +12,7 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 builder.Services.AddHealthChecks();
-
+InjecaoDependencia.Configurar(builder.Configuration, builder.Services);
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -21,9 +22,6 @@ app.UseCors(options =>
            .AllowAnyMethod()
            .AllowAnyHeader();
 });
-
-
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
