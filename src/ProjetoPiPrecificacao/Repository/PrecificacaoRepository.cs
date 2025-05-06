@@ -1,29 +1,42 @@
-﻿using ProjetoPiPrecificacao.Infra.Interface;
+﻿using Dapper;
+using ProjetoPiPrecificacao.Infra.Interface;
 using ProjetoPiPrecificacao.Models;
 using ProjetoPiPrecificacao.Repository.Interface;
 using ProjetoPiPrecificacao.Repository.Queries;
+using System.Data;
 
 namespace ProjetoPiPrecificacao.Repository
 {
-    public class PrecificacaoRepository : IPrecificacaoRepository
+    public class PrecificacaoRepository : DbRunnerRepository, IPrecificacaoRepository
     {
         private readonly PrecificacaoRepositoryQueries queries;
 
-        public PrecificacaoRepository(IDbConnectionFactory dbConnectionFactory)
+        public PrecificacaoRepository(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory)
         {
             queries = new PrecificacaoRepositoryQueries();
         }
 
         public bool Salvar(PrecificacaoModel model)
         {
-            // Implementar a lógica de salvar a precificação aqui
-            return true; // Retornar true se o salvamento for bem-sucedido, caso contrário, false
+            bool retorno = false;
+            var filtros = new Dictionary<string, object>();
+
+            Run((IDbConnection connection, IDbTransaction transaction) =>
+            {
+                retorno = connection.Execute(queries.Salvar, filtros, transaction) > 0;
+            });
+
+            return retorno;
         }
 
         public PrecificacaoModel CalcularPreco(PrecificacaoModel model)
         {
-            // Implementar a lógica de calcular o preço aqui
-            return new PrecificacaoModel(); // Retornar o modelo de precificação calculado
+            var filtros = new Dictionary<string, object>();
+
+            using (IDbConnection conexao = DbConnectionFactory.ObterConexao())
+            {
+                return conexao.Query<PrecificacaoModel>(queries.CalcularPreco, filtros).FirstOrDefault();
+            }
         }
     }
 }

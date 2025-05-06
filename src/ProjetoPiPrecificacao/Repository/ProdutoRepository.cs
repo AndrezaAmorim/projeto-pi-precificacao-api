@@ -1,29 +1,43 @@
-﻿using ProjetoPiPrecificacao.Infra.Interface;
+﻿using Dapper;
+using ProjetoPiPrecificacao.Infra.Interface;
 using ProjetoPiPrecificacao.Models;
 using ProjetoPiPrecificacao.Repository.Interface;
 using ProjetoPiPrecificacao.Repository.Queries;
+using System.Data;
 
 namespace ProjetoPiPrecificacao.Repository
 {
-    public class ProdutoRepository : IProdutoRepository
+    public class ProdutoRepository : DbRunnerRepository, IProdutoRepository
     {
         private readonly ProdutoRepositoryQueries queries;
 
-        public ProdutoRepository(IDbConnectionFactory dbConnectionFactory)
+        public ProdutoRepository(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory)
         {
             queries = new ProdutoRepositoryQueries();
         }
 
         public bool Cadastrar(ProdutoModel model)
         {
-            // Implementar a lógica de cadastro do produto aqui
-            return true; // Retornar true se o cadastro for bem-sucedido, caso contrário, false
+            bool retorno = false;
+            var filtros = new Dictionary<string, object>();
+
+            Run((IDbConnection connection, IDbTransaction transaction) =>
+            {
+                retorno =  connection.Execute(queries.Cadastrar, filtros, transaction) > 0;
+            });
+
+            return retorno;
         }
 
         public ProdutoModel BuscarProdutoPorSku(string SKU)
         {
-            // Implementar a lógica de busca do produto por SKU aqui
-            return new ProdutoModel(); // Retornar o produto encontrado ou null se não encontrado
+            var filtros = new Dictionary<string, object>();
+            filtros.Add("@SKU", SKU);
+
+            using (IDbConnection conexao = DbConnectionFactory.ObterConexao())
+            {
+                return conexao.Query<ProdutoModel>(queries.BuscarProdutoPorSku, filtros).FirstOrDefault();
+            }
         }
     }
 }

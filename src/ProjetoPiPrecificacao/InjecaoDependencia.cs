@@ -19,6 +19,7 @@ namespace ProjetoPiPrecificacao
             #region Repository
             services.AddScoped<IPrecificacaoRepository, PrecificacaoRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IDbRunnerRepository, DbRunnerRepository>();
             #endregion
 
             #region Infra
