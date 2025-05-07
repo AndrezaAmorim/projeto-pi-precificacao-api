@@ -23,7 +23,7 @@ namespace ProjetoPiPrecificacao.Repository
 
             Run((IDbConnection connection, IDbTransaction transaction) =>
             {
-                retorno = connection.Execute(queries.Salvar, filtros, transaction) > 0;
+                retorno = connection.Execute(sql: queries.Salvar, param: filtros, transaction: transaction) > 0;
             });
 
             return retorno;
@@ -35,7 +35,7 @@ namespace ProjetoPiPrecificacao.Repository
 
             using (IDbConnection conexao = DbConnectionFactory.ObterConexao())
             {
-                return conexao.Query<PrecificacaoModel>(queries.CalcularPreco, filtros).FirstOrDefault();
+                return conexao.Query<PrecificacaoModel>(sql: queries.CalcularPreco, param: filtros).FirstOrDefault();
             }
         }
     }

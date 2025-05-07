@@ -16,14 +16,45 @@ namespace ProjetoPiPrecificacao.Repository
             queries = new ProdutoRepositoryQueries();
         }
 
-        public bool Cadastrar(ProdutoModel model)
+        public int CadastrarProduto(ProdutoModel model)
         {
-            bool retorno = false;
+            int retorno = 0;
             var filtros = new Dictionary<string, object>();
+            filtros.Add("@SKU", model.SKU);
+            filtros.Add("@NomeProduto", model.NomeProduto);
+            filtros.Add("@Fornecedor", model.Fornecedor);
+            filtros.Add("@Peso", model.Peso);
+            filtros.Add("@Altura", model.Altura);
+            filtros.Add("@Largura", model.Largura);
+            filtros.Add("@Kit", model.Kit);
 
             Run((IDbConnection connection, IDbTransaction transaction) =>
             {
-                retorno =  connection.Execute(queries.Cadastrar, filtros, transaction) > 0;
+                retorno = connection.QueryFirst<int>(sql: queries.CadastrarProduto, param: filtros, transaction: transaction);
+            });
+
+            return retorno;
+        }
+
+        public bool CadastrarCustoProduto(ProdutoModel model)
+        {
+            bool retorno = false;
+            var filtros = new Dictionary<string, object>();
+            filtros.Add("@IdProduto", model.IdProduto);
+            filtros.Add("@DataCompra", model.DataCompra);
+            filtros.Add("@TipoCompra", model.TipoCompra);
+            filtros.Add("@PrecoUnitario", model.PrecoUnitario);
+            filtros.Add("@CustosExtras", model.CustosExtras);
+            filtros.Add("@ICMS", model.ICMS);
+            filtros.Add("@IPI", model.IPI);
+            filtros.Add("@PisCofins", model.PisCofins);
+            filtros.Add("@MvaAjustado", model.MvaAjustado);
+            filtros.Add("@IcmsRetido", model.IcmsRetido);
+            filtros.Add("@IcmsProprio", model.IcmsProprio);
+
+            Run((IDbConnection connection, IDbTransaction transaction) =>
+            {
+                retorno =  connection.Execute(sql: queries.CadastrarCustoProduto, param: filtros, transaction: transaction) > 0;
             });
 
             return retorno;
@@ -36,7 +67,7 @@ namespace ProjetoPiPrecificacao.Repository
 
             using (IDbConnection conexao = DbConnectionFactory.ObterConexao())
             {
-                return conexao.Query<ProdutoModel>(queries.BuscarProdutoPorSku, filtros).FirstOrDefault();
+                return conexao.Query<ProdutoModel>(sql: queries.BuscarProdutoPorSku, param: filtros).FirstOrDefault();
             }
         }
     }

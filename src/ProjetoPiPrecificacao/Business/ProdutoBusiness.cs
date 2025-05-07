@@ -14,7 +14,25 @@ namespace ProjetoPiPrecificacao.Business
 
         public bool Cadastrar(ProdutoModel model)
         {
-            return _produtoRepository.Cadastrar(model);
+            try 
+            {
+                int idProduto = _produtoRepository.CadastrarProduto(model);
+
+                if (idProduto == 0)
+                    throw new Exception("Erro ao cadastrar produto");
+
+                model.IdProduto = idProduto;
+                bool retorno = _produtoRepository.CadastrarCustoProduto(model);
+
+                if (!retorno)
+                    throw new Exception("Erro ao cadastrar custo do produto");
+
+                return retorno;
+
+            } catch (Exception ex) 
+            {
+                throw new Exception($"Erro ao cadastrar produto. {ex.Message}");
+            }
         }
 
         public ProdutoModel BuscarProdutoPorSku(string SKU)

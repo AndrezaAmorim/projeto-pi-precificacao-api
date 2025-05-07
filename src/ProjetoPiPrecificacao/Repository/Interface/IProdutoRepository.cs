@@ -4,7 +4,8 @@ namespace ProjetoPiPrecificacao.Repository.Interface
 {
     public interface IProdutoRepository
     {
-        bool Cadastrar(ProdutoModel model);
+        int CadastrarProduto(ProdutoModel model);
+        bool CadastrarCustoProduto(ProdutoModel model);
         ProdutoModel BuscarProdutoPorSku(string SKU);
     }
 }

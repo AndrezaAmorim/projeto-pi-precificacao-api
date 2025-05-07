@@ -2,19 +2,28 @@
 {
     public class ProdutoRepositoryQueries
     {
-        public readonly string Cadastrar;
+        public readonly string CadastrarProduto;
+        public readonly string CadastrarCustoProduto;
         public readonly string BuscarProdutoPorSku;
 
         public ProdutoRepositoryQueries()
         {
-            Cadastrar = CadastrarQuery();
+            CadastrarProduto = CadastrarProdutoQuery();
+            CadastrarCustoProduto = CadastrarCustoProdutoQuery();
             BuscarProdutoPorSku = BuscarProdutoPorSkuQuery();
         }
 
-        private string CadastrarQuery()
+        private string CadastrarProdutoQuery()
         {
             return $@"
+                // adicionar o SELECT SCOPE_IDENTITY() para retornar o ID do produto inserido
+            ";
+        }
 
+        private string CadastrarCustoProdutoQuery()
+        {
+            return $@"
+               
             ";
         }
 
