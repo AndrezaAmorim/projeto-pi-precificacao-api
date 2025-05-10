@@ -4,6 +4,7 @@ using ProjetoPiPrecificacao.Models;
 using ProjetoPiPrecificacao.Repository.Interface;
 using ProjetoPiPrecificacao.Repository.Queries;
 using System.Data;
+using System.Globalization;
 
 namespace ProjetoPiPrecificacao.Repository
 {
@@ -43,14 +44,14 @@ namespace ProjetoPiPrecificacao.Repository
             filtros.Add("@IdProduto", model.IdProduto);
             filtros.Add("@DataCompra", model.DataCompra);
             filtros.Add("@TipoCompra", model.TipoCompra);
-            filtros.Add("@PrecoUnitario", model.PrecoUnitario);
-            filtros.Add("@CustosExtras", model.CustosExtras);
-            filtros.Add("@ICMS", model.ICMS);
-            filtros.Add("@IPI", model.IPI);
-            filtros.Add("@PisCofins", model.PisCofins);
-            filtros.Add("@MvaAjustado", model.MvaAjustado);
-            filtros.Add("@IcmsRetido", model.IcmsRetido);
-            filtros.Add("@IcmsProprio", model.IcmsProprio);
+            filtros.Add("@PrecoUnitario", decimal.Parse(model.PrecoUnitario, CultureInfo.InvariantCulture));
+            filtros.Add("@CustosExtras", decimal.Parse(model.CustosExtras, CultureInfo.InvariantCulture));
+            filtros.Add("@ICMS", decimal.Parse(model.ICMS, CultureInfo.InvariantCulture));
+            filtros.Add("@IPI", decimal.Parse(model.IPI, CultureInfo.InvariantCulture));
+            filtros.Add("@PisCofins", decimal.Parse(model.PisCofins, CultureInfo.InvariantCulture));
+            filtros.Add("@MvaAjustado", decimal.Parse(model.MvaAjustado, CultureInfo.InvariantCulture));
+            filtros.Add("@IcmsRetido", decimal.Parse(model.IcmsRetido, CultureInfo.InvariantCulture));
+            filtros.Add("@IcmsProprio", decimal.Parse(model.IcmsProprio, CultureInfo.InvariantCulture));
 
             Run((IDbConnection connection, IDbTransaction transaction) =>
             {

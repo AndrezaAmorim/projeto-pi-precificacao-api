@@ -13,13 +13,13 @@
         public bool Kit { get; set; }
         public DateTime DataCompra { get; set; }
         public string TipoCompra { get; set; }
-        public float PrecoUnitario { get; set; }
-        public float CustosExtras { get; set; }
-        public float ICMS { get; set; }
-        public float IPI { get; set; }
-        public float PisCofins { get; set; }
-        public float MvaAjustado { get; set; }
-        public float IcmsRetido { get; set; }
-        public float IcmsProprio { get; set; }
+        public string PrecoUnitario { get; set; }
+        public string CustosExtras { get; set; }
+        public string ICMS { get; set; }
+        public string IPI { get; set; }
+        public string PisCofins { get; set; }
+        public string MvaAjustado { get; set; }
+        public string IcmsRetido { get; set; }
+        public string IcmsProprio { get; set; }
     }
 }
