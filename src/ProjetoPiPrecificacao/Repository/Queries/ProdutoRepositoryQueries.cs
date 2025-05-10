@@ -16,14 +16,21 @@
         private string CadastrarProdutoQuery()
         {
             return $@"
-                // adicionar o SELECT SCOPE_IDENTITY() para retornar o ID do produto inserido
+                INSERT INTO public.""dbo.Tabela_Produto""
+                (SKU, Descricao_Produto, Fornecedor, Peso, Altura, Largura, Kit)      
+                VALUES (@SKU, @NomeProduto, @Fornecedor, @Peso, @Altura, @Largura, @Kit);                    
+                SELECT SCOPE_IDENTITY();
             ";
         }
 
         private string CadastrarCustoProdutoQuery()
         {
             return $@"
-               
+                INSERT INTO public.""dbo.Tabela_Custo_Produto""
+                (Id_Produto, Data_Compra, Tipo_Compra, Preco_Unitario, Custos_Extras, ICMS, 
+                 IPI, PISCOFINS, MVAAjustado, ICMSRetido, ICMSProprio)
+                VALUES (@IdProduto, @DataCompra, @TipoCompra, @PrecoUnitario, @CustosExtras, @ICMS,
+                 @IPI, @PisCofins, @MvaAjustado, @IcmsRetido, @IcmsProprio);
             ";
         }
 

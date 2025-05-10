@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Npgsql;
 using ProjetoPiPrecificacao.Infra.Interface;
 using System.Data;
 
@@ -15,12 +16,12 @@ namespace ProjetoPiPrecificacao.Infra
 
         public IDbConnection ObterConexao() 
         {
-            return new SqlConnection(StringConexao); 
+            return new NpgsqlConnection(StringConexao); 
         }
 
         public IDbConnection ObterConexaoExecute() 
         {
-            return new SqlConnection(StringConexao);
+            return new NpgsqlConnection(StringConexao);
         }
     }
 }

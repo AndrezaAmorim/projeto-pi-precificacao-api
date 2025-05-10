@@ -1,9 +1,11 @@
-﻿using ProjetoPiPrecificacao.Business;
+﻿using Npgsql;
+using ProjetoPiPrecificacao.Business;
 using ProjetoPiPrecificacao.Business.Interface;
 using ProjetoPiPrecificacao.Infra;
 using ProjetoPiPrecificacao.Infra.Interface;
 using ProjetoPiPrecificacao.Repository;
 using ProjetoPiPrecificacao.Repository.Interface;
+using System.Data;
 
 namespace ProjetoPiPrecificacao
 {
