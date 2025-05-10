@@ -34,7 +34,7 @@ namespace ProjetoPiPrecificacao.Controllers
         [HttpGet]
         public IActionResult BuscarProdutoPorSku([FromQuery] string SKU)
         {
-            ProdutoModel retorno = _produtoBusiness.BuscarProdutoPorSku(SKU);
+            ProdutoModel? retorno = _produtoBusiness.BuscarProdutoPorSku(SKU);
 
             return Ok(retorno);
         }

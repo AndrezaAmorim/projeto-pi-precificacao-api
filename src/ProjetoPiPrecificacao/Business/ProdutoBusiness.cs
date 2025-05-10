@@ -35,7 +35,7 @@ namespace ProjetoPiPrecificacao.Business
             }
         }
 
-        public ProdutoModel BuscarProdutoPorSku(string SKU)
+        public ProdutoModel? BuscarProdutoPorSku(string SKU)
         {
             return _produtoRepository.BuscarProdutoPorSku(SKU);
         }
