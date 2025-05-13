@@ -37,7 +37,12 @@
         private string BuscarProdutoPorSkuQuery()
         {
             return $@"
-                
+                SELECT * FROM public.""dbo.Tabela_Produto"" dtp
+                INNER JOIN public.""dbo.Tabela_Custo_Produto"" dtcp
+                ON dtcp.""Id_Produto"" = dtp.""Id_Produto""
+                LEFT JOIN public.""dbo.Tabela_Preco_Produto"" dtpp
+                ON dtpp.""Id_Produto"" = dtp.""Id_Produto""
+                WHERE dtp.""SKU"" = @SKU    
             ";
         }
     }
