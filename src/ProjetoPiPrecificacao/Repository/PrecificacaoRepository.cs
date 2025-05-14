@@ -28,15 +28,5 @@ namespace ProjetoPiPrecificacao.Repository
 
             return retorno;
         }
-
-        public PrecificacaoModel CalcularPreco(PrecificacaoModel model)
-        {
-            var filtros = new Dictionary<string, object>();
-
-            using (IDbConnection conexao = DbConnectionFactory.ObterConexao())
-            {
-                return conexao.Query<PrecificacaoModel>(sql: queries.CalcularPreco, param: filtros).FirstOrDefault();
-            }
-        }
     }
 }

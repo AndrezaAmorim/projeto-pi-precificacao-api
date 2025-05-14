@@ -22,47 +22,52 @@ namespace ProjetoPiPrecificacao.Business
 
         public PrecificacaoModel CalcularPreco(PrecificacaoModel model)
         {
-            ProdutoModel? produtoModel = _produtoRepository.BuscarProdutoPorSku(model.SKU);
+            PrecificacaoModel? produtoModel = _produtoRepository.BuscarProdutoPorSku(model.SKU);
             if (produtoModel == null)
                 throw new Exception("Produto não encontrado.");
 
             float margemLucroDesejada = 40;
-            float custos = CalcularPorcentagem(model.ICMS, produtoModel.PrecoUnitario) +
-                CalcularPorcentagem(model.IPI, produtoModel.PrecoUnitario) +
-                CalcularPorcentagem(model.PisCofins, produtoModel.PrecoUnitario) +
-                CalcularPorcentagem(model.MvaAjustado, produtoModel.PrecoUnitario) +
-                CalcularPorcentagem(model.IcmsRetido, produtoModel.PrecoUnitario) +
-                CalcularPorcentagem(model.IcmsProprio, produtoModel.PrecoUnitario) +
-                model.CustosExtras;
+            float custos = CalcularPorcentagem(produtoModel.ICMS, produtoModel.PrecoUnitario) +
+                CalcularPorcentagem(produtoModel.IPI, produtoModel.PrecoUnitario) +
+                CalcularPorcentagem(produtoModel.PisCofins, produtoModel.PrecoUnitario) +
+                CalcularPorcentagem(produtoModel.MvaAjustado, produtoModel.PrecoUnitario) +
+                CalcularPorcentagem(produtoModel.IcmsRetido, produtoModel.PrecoUnitario) +
+                CalcularPorcentagem(produtoModel.IcmsProprio, produtoModel.PrecoUnitario) +
+                produtoModel.CustosExtras + produtoModel.PrecoUnitario;
 
-            model.PrecoSugeridoSTSP = custos / (1 - margemLucroDesejada);
+            produtoModel.PrecoSugeridoSTSP = custos / (1 - (margemLucroDesejada/100));
             
             if (model.PrecoVenda > 0)
             {
                 if (model.Desconto > 0)
                 {
                     float valor = CalcularPorcentagem(model.Desconto, model.PrecoVenda);
-                    model.PrecoDesconto = (model.PrecoVenda - valor) <= 0 ? 0 : (model.PrecoVenda - valor);
+                    produtoModel.PrecoDesconto = (model.PrecoVenda - valor) <= 0 ? 0 : (model.PrecoVenda - valor);
+                    produtoModel.Desconto = model.Desconto;
                 }
 
-                model.MargemLiquida = CalcularMargemLiquida(model.PrecoVenda, custos);
-                model.MargemBruta = CalcularMargemBruta(model.PrecoVenda, custos);
-                model.Lucro = CalcularLucro(model.PrecoVenda, custos);
+                produtoModel.MargemLiquida = CalcularMargemLiquida(model.PrecoVenda, custos);
+                produtoModel.MargemBruta = CalcularMargemBruta(model.PrecoVenda, custos);
+                produtoModel.Lucro = CalcularLucro(model.PrecoVenda, custos);
 
             } else
             {
                 if (model.Desconto > 0)
                 {
-                    float valor = CalcularPorcentagem(model.Desconto, model.PrecoSugeridoSTSP);
-                    model.PrecoDesconto = (model.PrecoSugeridoSTSP - valor) <= 0 ? 0 : (model.PrecoSugeridoSTSP - valor);
+                    float valor = CalcularPorcentagem(model.Desconto, produtoModel.PrecoSugeridoSTSP);
+                    produtoModel.PrecoDesconto = (produtoModel.PrecoSugeridoSTSP - valor) <= 0 ? 0 : (produtoModel.PrecoSugeridoSTSP - valor);
+                    produtoModel.Desconto = model.Desconto;
                 }
 
-                model.MargemLiquida = CalcularMargemLiquida(model.PrecoSugeridoSTSP, custos);
-                model.MargemBruta = CalcularMargemBruta(model.PrecoSugeridoSTSP, custos);
-                model.Lucro = CalcularLucro(model.PrecoSugeridoSTSP, custos);
+                produtoModel.MargemLiquida = CalcularMargemLiquida(produtoModel.PrecoSugeridoSTSP, custos);
+                produtoModel.MargemBruta = CalcularMargemBruta(produtoModel.PrecoSugeridoSTSP, custos);
+                produtoModel.Lucro = CalcularLucro(produtoModel.PrecoSugeridoSTSP, custos);
             }
 
-            return _precificacaoRepository.CalcularPreco(model);
+            if (produtoModel.DataAlteracaoPreco == null)
+                produtoModel.DataAlteracaoPreco = DateTime.Now;
+
+            return produtoModel;
         }
 
         private float CalcularPorcentagem(float valor, float precoUnitario)

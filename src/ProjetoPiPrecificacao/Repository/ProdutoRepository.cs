@@ -44,14 +44,14 @@ namespace ProjetoPiPrecificacao.Repository
             filtros.Add("@IdProduto", model.IdProduto);
             filtros.Add("@DataCompra", model.DataCompra);
             filtros.Add("@TipoCompra", model.TipoCompra);
-            filtros.Add("@PrecoUnitario", decimal.Parse(model.PrecoUnitario.ToString(), CultureInfo.InvariantCulture));
-            filtros.Add("@CustosExtras", decimal.Parse(model.CustosExtras.ToString(), CultureInfo.InvariantCulture));
-            filtros.Add("@ICMS", decimal.Parse(model.ICMS.ToString(), CultureInfo.InvariantCulture));
-            filtros.Add("@IPI", decimal.Parse(model.IPI.ToString(), CultureInfo.InvariantCulture));
-            filtros.Add("@PisCofins", decimal.Parse(model.PisCofins.ToString(), CultureInfo.InvariantCulture));
-            filtros.Add("@MvaAjustado", decimal.Parse(model.MvaAjustado.ToString(), CultureInfo.InvariantCulture));
-            filtros.Add("@IcmsRetido", decimal.Parse(model.IcmsRetido.ToString(), CultureInfo.InvariantCulture));
-            filtros.Add("@IcmsProprio", decimal.Parse(model.IcmsProprio.ToString(), CultureInfo.InvariantCulture));
+            filtros.Add("@PrecoUnitario", model.PrecoUnitario);
+            filtros.Add("@CustosExtras",  model.CustosExtras);
+            filtros.Add("@ICMS", model.ICMS);
+            filtros.Add("@IPI", model.IPI);
+            filtros.Add("@PisCofins", model.PisCofins);
+            filtros.Add("@MvaAjustado", model.MvaAjustado);
+            filtros.Add("@IcmsRetido", model.IcmsRetido);
+            filtros.Add("@IcmsProprio", model.IcmsProprio);
 
             Run((IDbConnection connection, IDbTransaction transaction) =>
             {
@@ -61,14 +61,14 @@ namespace ProjetoPiPrecificacao.Repository
             return retorno;
         }
 
-        public ProdutoModel? BuscarProdutoPorSku(string SKU)
+        public PrecificacaoModel? BuscarProdutoPorSku(string SKU)
         {
             var filtros = new Dictionary<string, object>();
             filtros.Add("@SKU", SKU);
 
             using (IDbConnection conexao = DbConnectionFactory.ObterConexao())
             {
-                return conexao.Query<ProdutoModel>(sql: queries.BuscarProdutoPorSku, param: filtros).FirstOrDefault();
+                return conexao.Query<PrecificacaoModel>(sql: queries.BuscarProdutoPorSku, param: filtros).FirstOrDefault();
             }
         }
     }

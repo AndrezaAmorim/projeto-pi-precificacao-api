@@ -10,6 +10,6 @@
         public float MargemLiquida { get; set; }
         public float MargemBruta { get; set; }
         public float Lucro { get; set; }
-        public DateTime DataAlteracaoPreco { get; set; }
+        public DateTime? DataAlteracaoPreco { get; set; }
     }
 }

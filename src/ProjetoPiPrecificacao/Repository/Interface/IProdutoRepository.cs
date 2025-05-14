@@ -6,6 +6,6 @@ namespace ProjetoPiPrecificacao.Repository.Interface
     {
         int CadastrarProduto(ProdutoModel model);
         bool CadastrarCustoProduto(ProdutoModel model);
-        ProdutoModel? BuscarProdutoPorSku(string SKU);
+        PrecificacaoModel? BuscarProdutoPorSku(string SKU);
     }
 }
