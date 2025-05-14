@@ -20,6 +20,15 @@ namespace ProjetoPiPrecificacao.Repository
         {
             bool retorno = false;
             var filtros = new Dictionary<string, object>();
+            filtros.Add("@IdProduto", model.IdProduto);
+            filtros.Add("@PrecoSugeridoSTSP", model.PrecoSugeridoSTSP);
+            filtros.Add("@PrecoVenda", model.PrecoVenda);
+            filtros.Add("@Desconto", model.Desconto);
+            filtros.Add("@PrecoDesconto", model.PrecoDesconto);
+            filtros.Add("@MargemLiquida", model.MargemLiquida);
+            filtros.Add("@MargemBruta", model.MargemBruta);
+            filtros.Add("@Lucro", model.Lucro);
+            filtros.Add("@DataAlteracaoPreco", DateTime.Now);
 
             Run((IDbConnection connection, IDbTransaction transaction) =>
             {
