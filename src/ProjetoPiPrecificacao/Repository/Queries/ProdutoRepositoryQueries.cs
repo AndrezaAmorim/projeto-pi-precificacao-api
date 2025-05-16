@@ -16,21 +16,85 @@
         private string CadastrarProdutoQuery()
         {
             return $@"
-                INSERT INTO public.""dbo.Tabela_Produto""
-                (""SKU"", ""Descricao_Produto"", ""Fornecedor"", ""Peso"", ""Altura"", ""Largura"", ""Kit"")      
-                VALUES (@SKU, @NomeProduto, @Fornecedor, @Peso, @Altura, @Largura, @Kit)                    
-                RETURNING ""Id_Produto"";
+                MERGE INTO public.""dbo.Tabela_Produto"" AS Destino
+                USING (
+                    SELECT 
+                        @SKU AS ""SKU"", 
+                        @NomeProduto AS ""Descricao_Produto"", 
+                        @Fornecedor AS ""Fornecedor"", 
+                        @Peso AS ""Peso"", 
+                        @Altura AS ""Altura"", 
+                        @Largura AS ""Largura"", 
+                        @Kit AS ""Kit""
+                ) AS Origem
+                ON Destino.""SKU"" = Origem.""SKU""
+                WHEN MATCHED THEN
+                    UPDATE SET
+                        ""Descricao_Produto"" = Origem.""Descricao_Produto"",
+                        ""Fornecedor"" = Origem.""Fornecedor"",
+                        ""Peso"" = Origem.""Peso"",
+                        ""Altura"" = Origem.""Altura"",
+                        ""Largura"" = Origem.""Largura"",
+                        ""Kit"" = Origem.""Kit""
+                WHEN NOT MATCHED THEN
+                    INSERT (
+                        ""SKU"", ""Descricao_Produto"", ""Fornecedor"", 
+                        ""Peso"", ""Altura"", ""Largura"", ""Kit""
+                    )
+                    VALUES (
+                        Origem.""SKU"", Origem.""Descricao_Produto"", Origem.""Fornecedor"", 
+                        Origem.""Peso"", Origem.""Altura"", Origem.""Largura"", Origem.""Kit""
+                    );
+                SELECT ""Id_Produto"" FROM public.""dbo.Tabela_Produto"" WHERE ""SKU"" = @SKU;
             ";
         }
 
         private string CadastrarCustoProdutoQuery()
         {
             return $@"
-                INSERT INTO public.""dbo.Tabela_Custo_Produto""
-                (""Id_Produto"", ""Data_Compra"", ""Tipo_Compra"", ""Preco_Unitario"", ""Custos_Extras"",
-                ""ICMS"", ""IPI"", ""PISCOFINS"", ""MVAAjustado"", ""ICMSRetido"", ""ICMSProprio"")
-                VALUES (@IdProduto, @DataCompra, @TipoCompra, @PrecoUnitario, @CustosExtras, @ICMS,
-                 @IPI, @PisCofins, @MvaAjustado, @IcmsRetido, @IcmsProprio);
+                MERGE INTO public.""dbo.Tabela_Custo_Produto"" AS Destino
+                USING (
+                    SELECT 
+                        @IdProduto AS ""Id_Produto"", 
+                        @DataCompra AS ""Data_Compra"", 
+                        @TipoCompra AS ""Tipo_Compra"", 
+                        @PrecoUnitario AS ""Preco_Unitario"", 
+                        @CustosExtras AS ""Custos_Extras"",
+                        @ICMS AS ""ICMS"",
+                        @IPI AS ""IPI"",
+                        @PisCofins AS ""PISCOFINS"",
+                        @MvaAjustado AS ""MVAAjustado"",
+                        @IcmsRetido AS ""ICMSRetido"",
+                        @IcmsProprio AS ""ICMSProprio""
+                ) AS Origem
+                ON Destino.""Id_Produto"" = Origem.""Id_Produto""
+                WHEN MATCHED THEN
+                    UPDATE SET
+                        ""Data_Compra"" = Origem.""Data_Compra"",
+                        ""Tipo_Compra"" = Origem.""Tipo_Compra"",
+                        ""Preco_Unitario"" = Origem.""Preco_Unitario"",
+                        ""Custos_Extras"" = Origem.""Custos_Extras"",
+                        ""ICMS"" = Origem.""ICMS"",
+                        ""IPI"" = Origem.""IPI"",
+                        ""PISCOFINS"" = Origem.""PISCOFINS"",
+                        ""MVAAjustado"" = Origem.""MVAAjustado"",
+                        ""ICMSRetido"" = Origem.""ICMSRetido"",
+                        ""ICMSProprio"" = Origem.""ICMSProprio""
+                WHEN NOT MATCHED THEN
+                    INSERT (
+                        ""Id_Produto"", ""Data_Compra"", ""Tipo_Compra"", 
+                        ""Preco_Unitario"", ""Custos_Extras"", 
+                        ""ICMS"", ""IPI"", ""PISCOFINS"", 
+                        ""MVAAjustado"", ""ICMSRetido"", 
+                        ""ICMSProprio""
+                    )
+                    VALUES (
+                        Origem.""Id_Produto"", Origem.""Data_Compra"", Origem.""Tipo_Compra"", 
+                        Origem.""Preco_Unitario"", Origem.""Custos_Extras"", 
+                        Origem.""ICMS"", Origem.""IPI"", Origem.""PISCOFINS"", 
+                        Origem.""MVAAjustado"", Origem.""ICMSRetido"", 
+                        Origem.""ICMSProprio""
+                    );
             ";
         }
 
