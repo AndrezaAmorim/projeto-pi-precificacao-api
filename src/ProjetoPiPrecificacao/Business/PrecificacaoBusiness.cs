@@ -1,4 +1,5 @@
 ﻿using ProjetoPiPrecificacao.Business.Interface;
+using ProjetoPiPrecificacao.Helpers;
 using ProjetoPiPrecificacao.Models;
 using ProjetoPiPrecificacao.Repository.Interface;
 
@@ -65,7 +66,7 @@ namespace ProjetoPiPrecificacao.Business
             }
 
             if (produtoModel.DataAlteracaoPreco == null)
-                produtoModel.DataAlteracaoPreco = DateTime.Now;
+                produtoModel.DataAlteracaoPreco = TratamentoHelper.GetHoraBrasil();
 
             return produtoModel;
         }

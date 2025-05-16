@@ -24,9 +24,9 @@ namespace ProjetoPiPrecificacao.Repository
             filtros.Add("@SKU", model.SKU);
             filtros.Add("@NomeProduto", model.NomeProduto);
             filtros.Add("@Fornecedor", model.Fornecedor);
-            filtros.Add("@Peso", model.Peso);
-            filtros.Add("@Altura", model.Altura);
-            filtros.Add("@Largura", model.Largura);
+            filtros.Add("@Peso", model.Peso == null ? 0 : model.Peso);
+            filtros.Add("@Altura", model.Altura == null ? 0 : model.Altura);
+            filtros.Add("@Largura", model.Largura == null ? 0 : model.Largura);
             filtros.Add("@Kit", model.Kit);
 
             Run((IDbConnection connection, IDbTransaction transaction) =>

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using ProjetoPiPrecificacao.Helpers;
 using ProjetoPiPrecificacao.Infra.Interface;
 using ProjetoPiPrecificacao.Models;
 using ProjetoPiPrecificacao.Repository.Interface;
@@ -28,7 +29,7 @@ namespace ProjetoPiPrecificacao.Repository
             filtros.Add("@MargemLiquida", model.MargemLiquida);
             filtros.Add("@MargemBruta", model.MargemBruta);
             filtros.Add("@Lucro", model.Lucro);
-            filtros.Add("@DataAlteracaoPreco", DateTime.Now);
+            filtros.Add("@DataAlteracaoPreco", TratamentoHelper.GetHoraBrasil());
 
             Run((IDbConnection connection, IDbTransaction transaction) =>
             {
