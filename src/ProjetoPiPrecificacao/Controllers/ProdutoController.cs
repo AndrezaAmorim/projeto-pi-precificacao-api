@@ -31,6 +31,27 @@ namespace ProjetoPiPrecificacao.Controllers
             });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CadastrarProdutoExcel(IFormFile arquivo)
+        {
+            if (arquivo == null || arquivo.Length == 0)
+                return BadRequest("Arquivo não enviado ou vazio");
+
+            try
+            {
+                await _produtoBusiness.CadastrarProdutoExcel(arquivo);
+                return Ok(new
+                {
+                    sucesso = true,
+                    mensagem = "Cadastro realizado com sucesso!"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro:" + ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult BuscarProdutoPorSku([FromQuery] string SKU)
         {

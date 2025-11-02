@@ -6,5 +6,6 @@ namespace ProjetoPiPrecificacao.Business.Interface
     {
         bool Cadastrar(ProdutoModel model);
         ProdutoModel? BuscarProdutoPorSku(string SKU);
+        Task CadastrarProdutoExcel(IFormFile arquivo);
     }
 }
