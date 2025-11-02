@@ -162,13 +162,8 @@ namespace ProjetoPiPrecificacao.Business
 
             valor = valor.ToLower().Replace(unidade.ToLower(), "").Trim();
             valor = valor.Replace(",", ".").Trim();
-            if (float.TryParse(valor, out float resultado))
+            if (float.TryParse(valor, NumberStyles.Any, CultureInfo.InvariantCulture, out float resultado))
             {
-                if (nomeCampo == "Peso" || nomeCampo == "Preço Unitário" || nomeCampo == "Custos Extras")
-                {
-                    return resultado / 100;
-                }
-
                 return resultado;
             }
             throw new Exception($"Linha {linha}: O campo '{nomeCampo}' deve ser um número válido.");
