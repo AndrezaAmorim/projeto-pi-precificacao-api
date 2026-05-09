@@ -37,6 +37,23 @@ namespace ProjetoPiPrecificacao.Business
             }
         }
 
+         public bool Excluir(ProdutoModel model)
+        {
+            try 
+            {
+                bool retorno = _produtoRepository.ExcluirProduto(model);
+             
+                if (!retorno)
+                    throw new Exception("Erro ao cadastrar custo do produto");
+
+                return retorno;
+
+            } catch (Exception ex) 
+            {
+                throw new Exception($"Erro ao cadastrar produto. {ex.Message}");
+            }
+        }
+
         public ProdutoModel? BuscarProdutoPorSku(string SKU)
         {
             return _produtoRepository.BuscarProdutoPorSku(SKU);
