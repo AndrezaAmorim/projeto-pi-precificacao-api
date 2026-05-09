@@ -3,12 +3,14 @@
     public class ProdutoRepositoryQueries
     {
         public readonly string CadastrarProduto;
+        public readonly string ExcluirProduto;
         public readonly string CadastrarCustoProduto;
         public readonly string BuscarProdutoPorSku;
 
         public ProdutoRepositoryQueries()
         {
             CadastrarProduto = CadastrarProdutoQuery();
+            ExcluirProduto = ExcluirProdutoQuery();
             CadastrarCustoProduto = CadastrarCustoProdutoQuery();
             BuscarProdutoPorSku = BuscarProdutoPorSkuQuery();
         }
@@ -46,6 +48,20 @@
                         Origem.""Peso"", Origem.""Altura"", Origem.""Largura"", Origem.""Kit""
                     );
                 SELECT ""Id_Produto"" FROM public.""dbo.Tabela_Produto"" WHERE ""SKU"" = @SKU;
+            ";
+        }
+
+        private string ExcluirProdutoQuery()
+        {
+            return $@"
+                DELETE FROM public.""dbo.Tabela_Preco_Produto""
+                WHERE ""Id_Produto"" = @IdProduto;
+
+                DELETE FROM public.""dbo.Tabela_Custo_Produto""
+                WHERE ""Id_Produto"" = @IdProduto;
+
+                DELETE FROM public.""dbo.Tabela_Produto""
+                WHERE ""Id_Produto"" = @IdProduto;
             ";
         }
 
