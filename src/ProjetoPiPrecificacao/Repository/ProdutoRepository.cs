@@ -61,6 +61,20 @@ namespace ProjetoPiPrecificacao.Repository
             return retorno;
         }
 
+        public bool ExcluirProduto(ProdutoModel model)
+        {
+            bool retorno = false;
+            var filtros = new Dictionary<string, object>();
+            filtros.Add("@IdProduto", model.IdProduto);
+            
+            Run((IDbConnection connection, IDbTransaction transaction) =>
+            {
+                retorno =  connection.Execute(sql: queries.ExcluirProduto, param: filtros, transaction: transaction) > 0;
+            });
+
+            return retorno;
+        }
+
         public PrecificacaoModel? BuscarProdutoPorSku(string SKU)
         {
             var filtros = new Dictionary<string, object>();
