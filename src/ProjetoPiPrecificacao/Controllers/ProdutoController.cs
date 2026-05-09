@@ -32,6 +32,22 @@ namespace ProjetoPiPrecificacao.Controllers
         }
 
         [HttpPost]
+        public IActionResult Excluir([FromBody] ProdutoModel model)
+        {
+
+            bool retorno = _produtoBusiness.Excluir(model);
+
+            if (!retorno)
+                return StatusCode(500);
+
+            return Ok(new
+            {
+                sucesso = true,
+                mensagem = "Exclusão realizada com sucesso!"
+            });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CadastrarProdutoExcel(IFormFile arquivo)
         {
             if (arquivo == null || arquivo.Length == 0)
